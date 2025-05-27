@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>Guia Interativo: Adesão à ARP - Nota Recomendatória 01/2025 com Checklist Detalhado</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .tab-button.active {
+            border-bottom-color: #2563eb; /* blue-600 */
+            color: #1e40af; /* blue-800 */
+            font-weight: 600;
+        }
+        /* Estilos para o checklist pai */
+        .checklist-item-content.strikethrough-parent {
+            color: #94a3b8; /* slate-400 for less emphasis on content */
+        }
+        .checklist-item-content.strikethrough-parent .sub-checklist-item-text:not(.strikethrough-text) {
+            color: #64748b; /* slate-500, slightly darker than parent text if not struck itself */
+        }        /* Estilo para texto taxado (aplicado a títulos e textos de subitens) */
+        .strikethrough-text {
+            text-decoration: line-through;
+        }        /* Alinhamento justificado para textos explicativos */
+        .text-justify {
+            text-align: justify;
+        }
+        
+        /* Animações para notas explicativas */
+        .explanatory-note {
+            overflow: hidden;
+            transition: all 0.4s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            margin-top: 0;
+            margin-bottom: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+        
+        .explanatory-note.expanded {
+            max-height: 2000px;
+            opacity: 1;
+            margin-top: 1rem;
+            margin-bottom: 0;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+        
+        /* Animação para o botão */
+        .explanatory-note-btn {
+            transition: all 0.3s ease-in-out;
+        }
+        
+        .explanatory-note-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .explanatory-note-btn.active {
+            background-color: #1e40af;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased">
+
+    <div class="container mx-auto   sm:p-6 md:p-8 max-w-5xl">        <header class="mb-8 text-center">
+            <h1 class="text-2xl sm:text-3xl font-bold text-blue-700 mb-2">Guia Interativo da Nota Recomendatória Conjunta Nº 01/2025</h1>
+            <p class="text-sm text-slate-600">ATRICON - IRB - CNPTC - ABRACOM - AUDICON</p>
+            <p class="mt-2 text-md text-slate-700">Sobre a fiscalização das adesões às Atas de Registro de Preços (ARP) pelos Tribunais de Contas.</p>
+            
+            <!-- Botão para visualizar PDF -->
+            <div class="mt-4">
+                <button id="pdf-viewer-btn" class="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg shadow-md transition duration-200 ease-in-out transform hover:scale-105">
+                    📄 Visualizar Nota Recomendatória (PDF)
+                </button>
+            </div>
+        </header>
+
+        <!-- Modal do visualizador de PDF -->
+        <div id="pdf-modal" class="fixed inset-0 z-50 hidden">
+            <!-- Overlay translúcido -->
+            <div id="pdf-overlay" class="absolute inset-0 bg-black bg-opacity-50"></div>
+            
+            <!-- Container do PDF -->
+            <div class="relative w-full h-full flex items-center justify-center  ">
+                <div class="relative bg-white rounded-lg shadow-2xl" style="width: 80vw; height: 80vh;">
+                    <!-- Cabeçalho com título e botão de fechar -->
+                    <div class="flex items-center justify-between   border-b border-gray-200 bg-gray-50 rounded-t-lg">
+                        <h3 class="text-lg font-semibold text-gray-800">Nota Recomendatória Conjunta Nº 01/2025</h3>
+                        <button id="pdf-close-btn" class="text-gray-500 hover:text-gray-700 text-2xl font-bold leading-none">×</button>
+                    </div>
+                    
+                    <!-- Iframe para o PDF -->
+                    <iframe id="pdf-iframe" class="w-full rounded-b-lg" style="height: calc(80vh - 60px);" frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white shadow-xl rounded-lg   sm:p-6">
+            <nav class="mb-6 border-b border-slate-300">
+                <ul class="flex flex-wrap -mb-px text-sm font-medium text-center text-slate-500">                    <li class="mr-2">
+                        <button class="tab-button inline-block p-3 sm:  border-b-2 border-transparent rounded-t-lg hover:text-slate-700 hover:border-slate-400" data-tab="introducao">Introdução</button>
+                    </li>
+                    <li class="mr-2">
+                        <button class="tab-button inline-block p-3 sm:  border-b-2 border-transparent rounded-t-lg hover:text-slate-700 hover:border-slate-400" data-tab="recomendacoesGerais">Recomendações Gerais</button>
+                    </li>
+                    <li class="mr-2">
+                        <button class="tab-button inline-block p-3 sm:  border-b-2 border-transparent rounded-t-lg hover:text-slate-700 hover:border-slate-400 active" data-tab="diretrizes">Diretrizes Detalhadas (Checklist)</button>
+                    </li>
+                    <li class="mr-2">
+                        <button class="tab-button inline-block p-3 sm:  border-b-2 border-transparent rounded-t-lg hover:text-slate-700 hover:border-slate-400" data-tab="recomendacaoComite">Recomendação ao Comitê RNCP</button>
+                    </li>
+                     <li>
+                        <button class="tab-button inline-block p-3 sm:  border-b-2 border-transparent rounded-t-lg hover:text-slate-700 hover:border-slate-400" data-tab="expediente">Expediente</button>
+                    </li>
+                </ul>
+            </nav>
+
+            <div id="tabContent" class="space-y-6">                <section id="introducao" class="tab-content-item hidden">
+                    <h2 class="text-xl font-semibold text-blue-600 mb-3">Introdução e Contextualização</h2>
+                     <p class="mb-3 text-slate-700 leading-relaxed">Esta Nota Recomendatória Conjunta, emitida em 02 de abril de 2025 pelas entidades representativas do sistema de controle externo brasileiro, visa orientar os Tribunais de Contas sobre a importância e os procedimentos para a fiscalização das adesões a Atas de Registro de Preços (ARP) pelos órgãos e entidades sob sua jurisdição.</p>
+                    <p class="mb-3 text-slate-700 leading-relaxed">As considerações que fundamentam esta recomendação incluem o aprimoramento do Sistema Tribunais de Contas, o papel da comunicação governamental, a função fiscalizatória dos Tribunais de Contas na legalidade, eficiência e economicidade das contratações públicas, e a necessidade de garantir transparência, eficiência e controle social nas adesões a ARPs. Busca-se, com isso, a integridade dos processos de contratações, a eficiente aplicação dos recursos públicos e a prevenção de irregularidades, desvios, improbidades e crimes.</p>
+                    <p class="text-slate-700 leading-relaxed">O objetivo principal é assegurar que as adesões respeitem os princípios da isonomia, moralidade administrativa, economicidade e as normas vigentes, como a Lei nº 14.133/2021.</p>
+                </section>
+
+                <section id="recomendacoesGerais" class="tab-content-item hidden">
+                    <h2 class="text-xl font-semibold text-blue-600 mb-3">Recomendações Gerais aos Tribunais de Contas</h2>
+                    <p class="mb-3 text-slate-700 leading-relaxed">As entidades signatárias RECOMENDAM aos Tribunais de Contas brasileiros que <strong class="font-semibold">adotem ou ampliem procedimentos de fiscalização das adesões às atas de registro de preços</strong>, por parte dos órgãos e entidades que lhes são jurisdicionadas.</p>
+                    <p class="text-slate-700 leading-relaxed">Essa fiscalização deve ser realizada com atenção especial às diretrizes detalhadas a seguir, visando garantir a correta aplicação dos recursos públicos e a conformidade dos processos de contratação.</p>
+                </section>
+
+                <section id="diretrizes" class="tab-content-item">
+                    <h2 class="text-xl font-semibold text-blue-600 mb-3">Diretrizes Detalhadas para Adesão à ARP (Checklist Interativo)</h2>
+                    <p class="mb-4 text-slate-700 leading-relaxed">Utilize este checklist para acompanhar a observância das diretrizes nos processos de adesão a Atas de Registro de Preços. Marque os itens conforme são verificados.</p>
+                    <div class="space-y-4">                        <div class="checklist-item bg-slate-50 rounded-md shadow-sm  ">                            <label class="flex items-start cursor-pointer mb-1">
+                                <input type="checkbox" class="checklist-checkbox h-5 w-5 text-blue-600 border-slate-300 rounded focus:ring-blue-500 mt-0.5 mr-3 shrink-0">
+                                <span class="font-semibold text-slate-700 checklist-item-title">1. Excepcionalidade e Processo Específico</span>
+                                <span class="ml-2.5 bg-orange-100 text-orange-700 text-xs font-medium px-2 py-1 rounded-full border border-orange-200">Área Demandante</span>
+                            </label>
+                            <div class="checklist-item-content pl-8 text-slate-600 leading-relaxed">                                As adesões a atas de registro de preços devem ser realizadas excepcionalmente e por intermédio de processo administrativo específico.                                <div class="mt-3">
+                                    <button type="button" class="explanatory-note-btn bg-slate-600 hover:bg-slate-700 text-white text-sm font-medium px-3 py-1 rounded-md transition-colors duration-200" data-target="nota-explicativa-1">
+                                        Nota Explicativa
+                                    </button>
+                                </div>
+                                <div id="nota-explicativa-1" class="explanatory-note mt-4   bg-blue-50 border-l-4 border-blue-300 rounded-md">
+                                    <h4 class="font-semibold text-blue-800 mb-3">Adesão a Atas de Registro de Preços</h4>                                    <p class="text-slate-700 mb-3 leading-relaxed text-justify">A adesão a Atas de Registro de Preços (carona) constitui uma modalidade de aquisição que, por sua natureza, deve ser empregada em caráter excepcional. Para que tal adesão seja validada, é imprescindível que seja conduzida por meio de um processo administrativo específico, que detalhe e justifique a escolha por esta via em detrimento de uma nova licitação.</p>
+                                    
+                                    <p class="text-slate-700 mb-4 leading-relaxed text-justify">A excepcionalidade da adesão deve ser solidamente fundamentada e elencada no Estudo Técnico Preliminar (ETP). É crucial questionar: por que aderir a uma ata existente em vez de realizar um novo procedimento licitatório? A motivação para essa decisão deve ser plausível, clara e demonstrar a vantagem e a necessidade da adesão.</p>
+                                    
+                                    <h5 class="font-semibold text-blue-800 mb-2">Exemplos de Justificativas para Adesão (a serem detalhadas no ETP):</h5>
+                                    <p class="text-slate-700 mb-3 leading-relaxed text-justify">A justificativa para a adesão deve demonstrar que esta opção é a mais vantajosa para a administração pública, considerando os princípios da economicidade, celeridade e eficiência. Abaixo, exemplos de passagens que podem elucidar a justificativa:</p>
+                                    
+                                    <div class="space-y-4">
+                                        <div>
+                                            <h6 class="font-medium text-slate-800 mb-1">Vantagem Econômica Comprovada:</h6>
+                                            <p class="text-slate-600 text-sm mb-2 leading-relaxed">"A pesquisa de mercado demonstrou que os preços praticados na Ata de Registro de Preços em questão são significativamente inferiores aos obtidos em licitações anteriores para objetos similares, ou aos preços de mercado atuais, garantindo a economicidade da aquisição."</p>
+                                            <p class="text-slate-600 text-sm leading-relaxed text-justify">"A adesão permitirá uma economia de [valor/percentual] em comparação com a estimativa de custos para uma nova licitação, considerando os custos administrativos e o tempo de tramitação."</p>
+                                        </div>
+                                        
+                                        <div>
+                                            <h6 class="font-medium text-slate-800 mb-1">Urgência ou Necessidade Imediata:</h6>
+                                            <p class="text-slate-600 text-sm mb-2 leading-relaxed">"A urgência na aquisição do objeto, decorrente de [descrever o evento ou situação que gerou a urgência, ex: calamidade pública, necessidade de continuidade de serviço essencial], inviabiliza a realização de um novo processo licitatório, que demandaria tempo incompatível com a necessidade."</p>
+                                            <p class="text-slate-600 text-sm leading-relaxed text-justify">"A não aquisição imediata do item/serviço acarretará [descrever o prejuízo ou impacto negativo, ex: paralisação de atividades críticas, comprometimento da saúde pública], sendo a adesão a única forma de suprir a demanda em tempo hábil."</p>
+                                        </div>
+                                        
+                                        <div>
+                                            <h6 class="font-medium text-slate-800 mb-1">Benefícios Operacionais e Celeridade Processual:</h6>
+                                            <p class="text-slate-600 text-sm mb-2 leading-relaxed">"A adesão à presente Ata de Registro de Preços permitirá uma significativa redução no tempo de tramitação do processo de aquisição, viabilizando a entrega do objeto/serviço em [prazo] e otimizando os recursos humanos e materiais envolvidos."</p>
+                                            <p class="text-slate-600 text-sm leading-relaxed text-justify">"A Ata já contempla todas as especificações técnicas necessárias e os fornecedores já foram previamente habilitados, o que agiliza o processo e minimiza riscos de impugnações ou atrasos."</p>
+                                        </div>
+                                        
+                                        <div>
+                                            <h6 class="font-medium text-slate-800 mb-1">Inexistência de Fornecedores Locais ou Especializados:</h6>
+                                            <p class="text-slate-600 text-sm leading-relaxed text-justify">"A complexidade do objeto ou a especificidade do serviço a ser contratado, conforme demonstrado no ETP, indica a escassez de fornecedores no mercado local/regional, sendo a Ata de Registro de Preços a via mais eficaz para garantir a contratação de empresa apta."</p>
+                                        </div>
+                                        
+                                        <div>
+                                            <h6 class="font-medium text-slate-800 mb-1">Padronização e Qualidade:</h6>
+                                            <p class="text-slate-600 text-sm leading-relaxed text-justify">"A adesão visa manter a padronização de equipamentos/serviços já utilizados pela instituição, garantindo a compatibilidade e a interoperabilidade, além de assegurar a qualidade e a performance já comprovadas."</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-4 pt-3 border-t border-blue-200">                                        <h5 class="font-semibold text-blue-800 mb-2">Processo Administrativo para Aquisições</h5>
+                                        <p class="text-slate-700 text-sm leading-relaxed text-justify">Informamos que já temos um processo administrativo formalmente estabelecido e em andamento para todo e qualquer tipo de aquisição em nossa instituição. Este processo serve como o arcabouço para a tramitação de todas as demandas, incluindo as adesões a Atas de Registro de Preços, garantindo a conformidade legal e a transparência em todas as etapas. A documentação e as justificativas para cada aquisição, incluindo as adesões, serão devidamente anexadas e analisadas dentro deste fluxo processual.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        <div class="checklist-item bg-slate-50 rounded-md shadow-sm  ">
+                            <label class="flex items-start cursor-pointer mb-1">
+                                <input type="checkbox" class="checklist-checkbox h-5 w-5 text-blue-600 border-slate-300 rounded focus:ring-blue-500 mt-0.5 mr-3 shrink-0">
+                                <span class="font-semibold text-slate-700 checklist-item-title">2. Previsão Expressa</span>
+                                <span class="ml-2.5 bg-orange-100 text-orange-700 text-xs font-medium px-2 py-1 rounded-full border border-orange-200">Área Demandante</span>
+                            </label>
+                            <div class="checklist-item-content pl-8 text-slate-600 leading-relaxed">                                A possibilidade de adesão deve ser expressamente prevista no edital de licitação para o sistema de registro de preços ou na própria ata, nas hipóteses de dispensa e inexigibilidade de licitação (art. 82, §6º Lei nº 14.133/21).                                <div class="mt-3">
+                                    <button type="button" class="explanatory-note-btn bg-slate-600 hover:bg-slate-700 text-white text-sm font-medium px-3 py-1 rounded-md transition-colors duration-200" data-target="nota-explicativa-2">
+                                        Nota Explicativa
+                                    </button>
+                                </div>
+                                <div id="nota-explicativa-2" class="explanatory-note mt-4   bg-blue-50 border-l-4 border-blue-300 rounded-md">
+                                    <h4 class="font-semibold text-blue-800 mb-3">Previsão Expressa para Adesão a Atas de Registro de Preços</h4>
+                                    <p class="text-slate-700 mb-3 leading-relaxed text-justify">O item em questão aborda um princípio fundamental para a legalidade da adesão a Atas de Registro de Preços (ARP): a necessidade de previsão expressa. Isso significa que a possibilidade de "carona" não pode ser implícita ou presumida; ela deve estar claramente estabelecida no documento que originou a Ata.</p>
+                                    
+                                    <h5 class="font-semibold text-blue-800 mb-2">A Necessidade da Previsão Expressa</h5>
+                                    <p class="text-slate-700 mb-4 leading-relaxed text-justify">Para que qualquer órgão ou entidade não participante do Sistema de Registro de Preços (SRP) possa aderir a uma Ata de Registro de Preços, é mandatório que o edital de licitação que deu origem a essa Ata, ou a própria Ata de Registro de Preços, contenha uma cláusula ou item que explicitamente permita e regule a adesão por parte de terceiros.</p>
+                                    
+                                    <p class="text-slate-700 mb-4 leading-relaxed text-justify">Essa exigência visa garantir a publicidade, a segurança jurídica e a transparência do processo, assegurando que todos os interessados (incluindo os licitantes originais) tivessem ciência da possibilidade de adesão desde o início. Sem essa previsão expressa, a adesão seria irregular e passível de questionamentos.</p>
+                                    
+                                    <h5 class="font-semibold text-blue-800 mb-2">Fundamentação Legal: Art. 82, §6º da Lei nº 14.133/21</h5>
+                                    <p class="text-slate-700 mb-3 leading-relaxed text-justify">A obrigatoriedade da previsão expressa está consolidada na nova Lei de Licitações e Contratos Administrativos, a Lei nº 14.133/2021, em seu Artigo 82, §6º.</p>
+                                    
+                                    <div class="bg-slate-100 p-3 rounded-md mb-3">
+                                        <p class="text-slate-800 text-sm font-medium mb-2">Transcrevendo o dispositivo legal:</p>
+                                        <p class="text-slate-700 text-sm italic leading-relaxed">Art. 82. O edital de licitação para registro de preços observará o disposto no art. 40 desta Lei e indicará:</p>
+                                        <p class="text-slate-700 text-sm italic leading-relaxed">(...)</p>
+                                        <p class="text-slate-700 text-sm italic leading-relaxed">§ 6º A possibilidade de adesão a ata de registro de preços por órgão ou entidade não participante somente poderá ser prevista no edital de licitação para o sistema de registro de preços, e nas hipóteses de dispensa e de inexigibilidade de licitação, na própria ata.</p>
+                                    </div>
+                                    
+                                    <h6 class="font-medium text-slate-800 mb-2">Explicação do Artigo:</h6>
+                                    <p class="text-slate-700 mb-3 leading-relaxed text-justify">O parágrafo 6º do Art. 82 estabelece claramente duas situações em que a previsão expressa da adesão é exigida:</p>
+                                    
+                                    <div class="space-y-3 mb-4">
+                                        <div>
+                                            <h6 class="font-medium text-slate-800 mb-1">Em licitações para Sistema de Registro de Preços (SRP):</h6>
+                                            <p class="text-slate-600 text-sm leading-relaxed text-justify">A possibilidade de adesão por "carona" deve estar contida no edital de licitação que visa formar a Ata de Registro de Preços. Isso garante que, desde a fase inicial da licitação, os potenciais fornecedores e a sociedade em geral tenham conhecimento de que a Ata resultante poderá ser utilizada por outros órgãos.</p>
+                                        </div>
+                                        
+                                        <div>
+                                            <h6 class="font-medium text-slate-800 mb-1">Em Atas resultantes de Dispensa ou Inexigibilidade de Licitação:</h6>
+                                            <p class="text-slate-600 text-sm leading-relaxed text-justify">Quando a Ata de Registro de Preços é formada a partir de um processo de dispensa ou inexigibilidade de licitação (situações excepcionais onde a licitação é inviável ou desnecessária, conforme a lei), a previsão da adesão deve constar na própria Ata. Embora não haja um edital de licitação formal nesses casos, a Ata em si deve ser o documento que formaliza e permite a adesão.</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <p class="text-slate-700 mb-4 leading-relaxed text-justify"><strong>Em resumo:</strong> Busca-se assegurar que a adesão seja uma opção conhecida e previamente autorizada, seja no instrumento convocatório da licitação (o edital) ou no próprio instrumento contratual (a ata), quando a licitação não for o caminho original.</p>
+                                    
+                                    <div class="mt-4 pt-3 border-t border-blue-200">
+                                        <h5 class="font-semibold text-blue-800 mb-2">Exemplo Prático:</h5>
+                                        <p class="text-slate-700 mb-3 leading-relaxed text-justify">Imagine que o Ministério da Saúde (órgão gerenciador) decide realizar uma licitação para registrar preços de vacinas.</p>
+                                        
+                                        <div class="space-y-3">
+                                            <div class="bg-green-50 p-3 rounded-md border-l-4 border-green-300">
+                                                <h6 class="font-medium text-green-800 mb-1">Cenário Correto:</h6>
+                                                <p class="text-green-700 text-sm leading-relaxed">No Edital de Licitação para o Sistema de Registro de Preços das vacinas, há um item específico que diz: "Fica permitida a adesão à Ata de Registro de Preços resultante desta licitação por outros órgãos e entidades da Administração Pública Federal, Estadual e Municipal, observados os limites e condições estabelecidos na legislação vigente."</p>
+                                                <p class="text-green-700 text-sm mt-2 leading-relaxed">Nesse caso, a Prefeitura de Fortaleza, ao identificar a necessidade de adquirir vacinas e verificar a Ata do Ministério da Saúde, poderá aderir a ela, pois a possibilidade estava expressamente prevista no edital original.</p>
+                                            </div>
+                                            
+                                            <div class="bg-red-50 p-3 rounded-md border-l-4 border-red-300">
+                                                <h6 class="font-medium text-red-800 mb-1">Cenário Incorreto:</h6>
+                                                <p class="text-red-700 text-sm leading-relaxed">Se o Edital de Licitação do Ministério da Saúde NÃO contivesse essa previsão expressa, a Prefeitura de Fortaleza NÃO poderia aderir à Ata, mesmo que os preços fossem vantajosos. A ausência da previsão expressa tornaria a adesão irregular, pois a lei exige que essa possibilidade seja clara desde o início.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="checklist-item bg-slate-50 rounded-md shadow-sm  ">
+                            <label class="flex items-start cursor-pointer mb-1">
+                                <input type="checkbox" class="checklist-checkbox h-5 w-5 text-blue-600 border-slate-300 rounded focus:ring-blue-500 mt-0.5 mr-3 shrink-0">
+                                <span class="font-semibold text-slate-700 checklist-item-title">3. Instrução Mínima do Processo de Adesão</span>
+                            </label>
+                            <div class="checklist-item-content pl-8 text-slate-600 leading-relaxed">
+                                <p class="mb-2">O processo de adesão deve ser instruído, no mínimo, com os seguintes elementos:</p>
+                                <ul class="space-y-2">                                    <li class="sub-checklist-item">
+                                        <label class="flex items-start cursor-pointer flex-wrap">
+                                            <input type="checkbox" class="sub-checklist-checkbox h-4 w-4 text-sky-600 border-slate-300 rounded focus:ring-sky-500 mt-1 mr-2 shrink-0">
+                                            <div class="flex flex-wrap items-center gap-2 flex-1">
+                                                <span class="sub-checklist-item-text">a) Instrumentos preparatórios para as contratações previstos na Lei nº 14.133/21, especialmente estudo técnico preliminar, documento de formalização da demanda e termo de referência ou projeto básico;</span>
+                                                <span class="bg-orange-100 text-orange-700 text-xs font-medium px-2 py-1 rounded-full border border-orange-200 whitespace-nowrap">Área Demandante</span>
+                                                <button type="button" class="explanatory-note-btn bg-slate-600 hover:bg-slate-700 text-white text-xs font-medium px-2 py-1 rounded-md transition-colors duration-200 ml-2" data-target="nota-explicativa-3a">
+                                                    Nota Explicativa
+                                                </button>
+                                            </div>
+                                        </label>
+                                        <div id="nota-explicativa-3a" class="explanatory-note mt-4   bg-blue-50 border-l-4 border-blue-300 rounded-md ml-6">
+                                            <h4 class="font-semibold text-blue-800 mb-3">Instrumentos Preparatórios para Adesão à ARP</h4>
+                                            <p class="text-slate-700 mb-3 leading-relaxed text-justify">Mesmo em se tratando de uma adesão a uma Ata de Registro de Preços já existente, a fase de planejamento da contratação é indispensável. A Lei nº 14.133/2021 reforça a importância dos instrumentos preparatórios, que devem ser elaborados pelo órgão ou entidade aderente para justificar a necessidade da aquisição e as especificações do objeto.</p>
+                                            
+                                            <div class="space-y-4">
+                                                <div>
+                                                    <h5 class="font-semibold text-blue-800 mb-2">Estudo Técnico Preliminar (ETP):</h5>
+                                                    <p class="text-slate-700 text-sm leading-relaxed">Documento que analisa a viabilidade técnica e econômica da solução escolhida, demonstrando a necessidade da contratação, os requisitos do objeto, as alternativas possíveis e a justificativa para a solução adotada (neste caso, a adesão à ARP). É no ETP que se deve fundamentar a excepcionalidade da adesão.</p>
+                                                </div>
+                                                
+                                                <div>
+                                                    <h5 class="font-semibold text-blue-800 mb-2">Documento de Formalização da Demanda (DFD):</h5>
+                                                    <p class="text-slate-700 text-sm leading-relaxed">Instrumento que formaliza a solicitação da área demandante, descrevendo a necessidade, o problema a ser resolvido ou a oportunidade a ser aproveitada, e os resultados esperados com a contratação.</p>
+                                                </div>
+                                                
+                                                <div>
+                                                    <h5 class="font-semibold text-blue-800 mb-2">Termo de Referência (TR) ou Projeto Básico (PB):</h5>
+                                                    <p class="text-slate-700 text-sm leading-relaxed">Documentos que detalham as especificações técnicas do objeto ou serviço a ser adquirido, as condições de execução, prazos, formas de pagamento, critérios de aceitação, obrigações das partes, e demais elementos necessários para a contratação. Para a adesão, o TR/PB deve demonstrar que o objeto da ARP atende integralmente às necessidades do órgão aderente.</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="mt-4 pt-3 border-t border-blue-200">
+                                                <p class="text-slate-700 text-sm leading-relaxed font-medium">A elaboração desses instrumentos, mesmo para a adesão, é crucial para garantir que a contratação seja planejada, adequada e alinhada às necessidades da Administração.</p>
+                                            </div>
+                                        </div>
+                                    </li>                                    <li class="sub-checklist-item">
+                                        <label class="flex items-start cursor-pointer flex-wrap">
+                                            <input type="checkbox" class="sub-checklist-checkbox h-4 w-4 text-sky-600 border-slate-300 rounded focus:ring-sky-500 mt-1 mr-2 shrink-0">
+                                            <div class="flex flex-wrap items-center gap-2 flex-1">
+                                                <span class="sub-checklist-item-text">b) Análise qualitativa do objeto registrado, que demonstre atender, integralmente, às necessidades do órgão ou entidade aderente, em especial quanto às condições de execução, recebimento e pagamento e às garantias ofertadas;</span>
+                                                <span class="bg-orange-100 text-orange-700 text-xs font-medium px-2 py-1 rounded-full border border-orange-200 whitespace-nowrap">Área Demandante</span>
+                                                <button type="button" class="explanatory-note-btn bg-slate-600 hover:bg-slate-700 text-white text-xs font-medium px-2 py-1 rounded-md transition-colors duration-200 ml-2" data-target="nota-explicativa-3b">
+                                                    Nota Explicativa
+                                                </button>
+                                            </div>
+                                        </label>
+                                        <div id="nota-explicativa-3b" class="explanatory-note ml-6 mt-4   bg-blue-50 border-l-4 border-blue-300 rounded-md">
+                                            <h4 class="font-semibold text-blue-800 mb-3">Análise Qualitativa do Objeto Registrado</h4>
+                                            <p class="text-slate-700 mb-3 leading-relaxed text-justify">Não basta que o preço seja vantajoso. É fundamental que o órgão ou entidade aderente realize uma análise qualitativa aprofundada do objeto registrado na Ata de Registro de Preços. Essa análise deve assegurar que o item ou serviço em questão atende integralmente às suas necessidades específicas.</p>
+                                            
+                                            <h5 class="font-semibold text-blue-800 mb-2">Aspectos a serem verificados:</h5>
+                                            <div class="space-y-3">
+                                                <div>
+                                                    <h6 class="font-medium text-slate-800 mb-1">Condições de Execução:</h6>
+                                                    <p class="text-slate-600 text-sm leading-relaxed text-justify">Se o objeto ou serviço pode ser executado conforme as exigências do órgão aderente (ex: prazos de entrega, local de prestação do serviço).</p>
+                                                </div>
+                                                
+                                                <div>
+                                                    <h6 class="font-medium text-slate-800 mb-1">Condições de Recebimento:</h6>
+                                                    <p class="text-slate-600 text-sm leading-relaxed text-justify">Se os critérios de recebimento do objeto/serviço são compatíveis com as normas e procedimentos internos do órgão.</p>
+                                                </div>
+                                                
+                                                <div>
+                                                    <h6 class="font-medium text-slate-800 mb-1">Condições de Pagamento:</h6>
+                                                    <p class="text-slate-600 text-sm leading-relaxed text-justify">Se as formas e prazos de pagamento previstos na ARP se adequam à capacidade orçamentária e aos fluxos financeiros do órgão aderente.</p>
+                                                </div>
+                                                
+                                                <div>
+                                                    <h6 class="font-medium text-slate-800 mb-1">Garantias Ofertadas:</h6>
+                                                    <p class="text-slate-600 text-sm leading-relaxed text-justify">Se as garantias de qualidade, assistência técnica, manutenção, entre outras, são suficientes e adequadas para o uso pretendido pelo órgão.</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="mt-4 pt-3 border-t border-blue-200">
+                                                <p class="text-slate-700 text-sm leading-relaxed font-medium">A ausência de conformidade em qualquer um desses pontos pode inviabilizar a adesão, mesmo que o preço seja atrativo.</p>
+                                            </div>
+                                        </div>
+                                    </li>                                    <li class="sub-checklist-item" id="diretriz3c_subitem">
+                                        <label class="flex items-start cursor-pointer flex-wrap">
+                                            <input type="checkbox" class="sub-checklist-checkbox h-4 w-4 text-sky-600 border-slate-300 rounded focus:ring-sky-500 mt-1 mr-2 shrink-0">
+                                            <div class="flex flex-wrap items-center gap-2 flex-1">
+                                                <span class="sub-checklist-item-text">c) Justificativa da vantagem da adesão, inclusive em situações de provável desabastecimento ou descontinuidade de serviço público;</span>
+                                                <span class="bg-orange-100 text-orange-700 text-xs font-medium px-2 py-1 rounded-full border border-orange-200 whitespace-nowrap">Área Demandante</span>
+                                                <button type="button" class="explanatory-note-btn bg-slate-600 hover:bg-slate-700 text-white text-xs font-medium px-2 py-1 rounded-md transition-colors duration-200 ml-2" data-target="nota-explicativa-3c">
+                                                    Nota Explicativa
+                                                </button>
+                                            </div>
+                                        </label>
+                                        <div id="nota-explicativa-3c" class="explanatory-note ml-6 mt-4   bg-blue-50 border-l-4 border-blue-300 rounded-md">
+                                            <h4 class="font-semibold text-blue-800 mb-3">Justificativa da Vantagem da Adesão</h4>
+                                            <p class="text-slate-700 mb-3 leading-relaxed text-justify">A adesão a uma ARP deve ser sempre a opção mais vantajosa para a Administração Pública. É imperativo que o órgão ou entidade aderente apresente uma justificativa clara e robusta que demonstre essa vantagem. Essa justificativa pode abranger diversos aspectos, tais como:</p>
+                                            
+                                            <div class="space-y-3">
+                                                <div>
+                                                    <h6 class="font-medium text-slate-800 mb-1">Economicidade:</h6>
+                                                    <p class="text-slate-600 text-sm leading-relaxed text-justify">Comprovação de que o preço registrado na ARP é mais vantajoso que o de uma nova licitação ou de pesquisa de mercado.</p>
+                                                </div>
+                                                
+                                                <div>
+                                                    <h6 class="font-medium text-slate-800 mb-1">Celeridade:</h6>
+                                                    <p class="text-slate-600 text-sm leading-relaxed text-justify">A urgência na aquisição que inviabiliza um novo processo licitatório.</p>
+                                                </div>
+                                                
+                                                <div>
+                                                    <h6 class="font-medium text-slate-800 mb-1">Eficiência:</h6>
+                                                    <p class="text-slate-600 text-sm leading-relaxed text-justify">Otimização de recursos e tempo.</p>
+                                                </div>
+                                                
+                                                <div>
+                                                    <h6 class="font-medium text-slate-800 mb-1">Evitar Desabastecimento ou Descontinuidade:</h6>
+                                                    <p class="text-slate-600 text-sm leading-relaxed text-justify">Em cenários de risco de desabastecimento de bens essenciais ou de interrupção de serviços públicos cruciais, a adesão pode ser a via mais rápida e eficaz para garantir a continuidade, desde que devidamente justificada e comprovada a situação de risco.</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="mt-4 pt-3 border-t border-blue-200">
+                                                <p class="text-slate-700 text-sm leading-relaxed font-medium">A justificativa deve ser documentada e demonstrar que a adesão é a melhor solução para atender à necessidade pública.</p>
+                                            </div>
+                                        </div>
+                                    </li>                                    <li class="sub-checklist-item">
+                                        <label class="flex items-start cursor-pointer flex-wrap">
+                                            <input type="checkbox" class="sub-checklist-checkbox h-4 w-4 text-sky-600 border-slate-300 rounded focus:ring-sky-500 mt-1 mr-2 shrink-0">
+                                            <div class="flex flex-wrap items-center gap-2 flex-1">
+                                                <span class="sub-checklist-item-text">d) Demonstração, por meio da utilização dos parâmetros estabelecidos no art. 23 da Lei nº 14.133/21, de que os valores registrados estão compatíveis com os praticados no mercado;</span>
+                                                <span class="bg-orange-100 text-orange-700 text-xs font-medium px-2 py-1 rounded-full border border-orange-200 whitespace-nowrap">Área Demandante</span>
+                                                <button type="button" class="explanatory-note-btn bg-slate-600 hover:bg-slate-700 text-white text-xs font-medium px-2 py-1 rounded-md transition-colors duration-200 ml-2" data-target="nota-explicativa-3d">
+                                                    Nota Explicativa
+                                                </button>
+                                            </div>
+                                        </label>
+                                        <div id="nota-explicativa-3d" class="explanatory-note ml-6 mt-4   bg-blue-50 border-l-4 border-blue-300 rounded-md">
+                                            <h4 class="font-semibold text-blue-800 mb-3">Demonstração da Compatibilidade de Valores</h4>
+                                            <p class="text-slate-700 mb-3 leading-relaxed text-justify">Mesmo que o preço já esteja registrado em uma Ata, o órgão ou entidade aderente tem a obrigação de verificar se os valores ainda são compatíveis com os praticados no mercado no momento da adesão. Para isso, devem ser utilizados os parâmetros definidos no Art. 23 da Lei nº 14.133/2021.</p>
+                                            
+                                            <div class="bg-slate-100 p-3 rounded-md mb-3">
+                                                <h5 class="font-semibold text-blue-800 mb-2">Transcrevendo o dispositivo legal (Art. 23 da Lei nº 14.133/2021):</h5>
+                                                <p class="text-slate-700 text-sm italic leading-relaxed">Art. 23. O valor previamente estimado da contratação será compatível com os valores praticados no mercado, considerados os preços constantes de bancos de dados públicos e de sistemas de registro cadastral unificado de fornecedores, o custo de contratações similares de outros órgãos ou entidades da Administração Pública, a pesquisa publicada em mídia especializada, sítios eletrônicos especializados ou de domínio amplo, a pesquisa com os fornecedores, sem prejuízo de outros métodos de avaliação.</p>
+                                            </div>
+                                            
+                                            <h5 class="font-semibold text-blue-800 mb-2">Fontes e Métodos para Verificação de Preços:</h5>
+                                            <div class="space-y-2 mb-4">
+                                                <p class="text-slate-600 text-sm leading-relaxed text-justify">• <strong>Painel de Preços:</strong> Consulta a bancos de dados públicos de preços.</p>
+                                                <p class="text-slate-600 text-sm leading-relaxed text-justify">• <strong>Contratos Similares:</strong> Análise de contratos recentes de outros órgãos públicos para o mesmo objeto.</p>
+                                                <p class="text-slate-600 text-sm leading-relaxed text-justify">• <strong>Pesquisa com Fornecedores:</strong> Solicitação de cotações a fornecedores do mercado.</p>
+                                                <p class="text-slate-600 text-sm leading-relaxed text-justify">• <strong>Sítios Eletrônicos Especializados:</strong> Consulta a preços em plataformas de comércio eletrônico ou sites especializados.</p>
+                                            </div>
+                                            
+                                            <div class="bg-yellow-50 p-3 rounded-md border-l-4 border-yellow-300">
+                                                <h6 class="font-medium text-yellow-800 mb-1">Exemplo Prático:</h6>
+                                                <p class="text-yellow-700 text-sm leading-relaxed">Se uma Ata de Registro de Preços para notebooks foi homologada há 6 meses, e o órgão "X" deseja aderir a ela hoje, o órgão "X" deve realizar uma pesquisa de mercado atualizada para notebooks com as mesmas especificações. Se a pesquisa indicar que o preço da Ata está 20% acima dos preços de mercado atuais, a adesão não seria vantajosa e, portanto, não deveria ser realizada, mesmo que a Ata seja válida.</p>
+                                            </div>
+                                            
+                                            <div class="mt-4 pt-3 border-t border-blue-200">
+                                                <p class="text-slate-700 text-sm leading-relaxed font-medium">Essa verificação garante que a Administração sempre contrate pelo preço mais justo e vantajoso no momento da efetiva aquisição.</p>
+                                            </div>
+                                        </div>
+                                    </li>                                    <li class="sub-checklist-item">
+                                        <label class="flex items-start cursor-pointer flex-wrap">
+                                            <input type="checkbox" class="sub-checklist-checkbox h-4 w-4 text-sky-600 border-slate-300 rounded focus:ring-sky-500 mt-1 mr-2 shrink-0">                                            <div class="flex flex-col gap-3 flex-1">
+                                                <span class="sub-checklist-item-text">e) Prévia consulta ao órgão ou entidade gerenciadora e ao fornecedor;</span>
+                                                <div class="flex flex-wrap items-center gap-3">
+                                                    <span class="bg-orange-100 text-orange-700 text-xs font-medium px-2 py-1 rounded-full border border-orange-200 whitespace-nowrap">Área Demandante</span>
+                                                    <button type="button" class="explanatory-note-btn bg-slate-600 hover:bg-slate-700 text-white text-xs font-medium px-2 py-1 rounded-md transition-colors duration-200" data-target="nota-explicativa-3e">
+                                                        Nota Explicativa
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </label>
+                                        <div id="nota-explicativa-3e" class="explanatory-note ml-6 mt-4   bg-blue-50 border-l-4 border-blue-300 rounded-md">
+                                            <h4 class="font-semibold text-blue-800 mb-3">Prévia Consulta ao Órgão Gerenciador e ao Fornecedor</h4>
+                                            <p class="text-slate-700 mb-3 leading-relaxed text-justify">Antes de formalizar a adesão, o órgão ou entidade interessada deve realizar uma consulta prévia e formal a duas partes essenciais:</p>
+                                            
+                                            <div class="space-y-4">
+                                                <div>
+                                                    <h5 class="font-semibold text-blue-800 mb-2">Órgão ou Entidade Gerenciadora:</h5>
+                                                    <p class="text-slate-700 text-sm leading-relaxed">É o órgão que realizou a licitação e gerencia a Ata de Registro de Preços. A consulta visa verificar a disponibilidade da Ata para adesão, se há limites de quantidade ou valor já atingidos, e se o gerenciador tem alguma observação ou requisito específico para a adesão.</p>
+                                                </div>
+                                                
+                                                <div>
+                                                    <h5 class="font-semibold text-blue-800 mb-2">Fornecedor Detentor da Ata:</h5>
+                                                    <p class="text-slate-700 text-sm leading-relaxed">A empresa que venceu a licitação e detém o preço registrado na Ata. A consulta ao fornecedor é para verificar se ele tem interesse e capacidade de atender à nova demanda decorrente da adesão, considerando seus compromissos já assumidos.</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="mt-4 pt-3 border-t border-blue-200">
+                                                <p class="text-slate-700 text-sm leading-relaxed font-medium">Essa consulta prévia é um passo fundamental para evitar problemas futuros e garantir que tanto o gerenciador quanto o fornecedor estejam cientes e de acordo com a potencial adesão.</p>
+                                            </div>
+                                        </div>
+                                    </li>                                    <li class="sub-checklist-item">
+                                        <label class="flex items-start cursor-pointer flex-wrap">
+                                            <input type="checkbox" class="sub-checklist-checkbox h-4 w-4 text-sky-600 border-slate-300 rounded focus:ring-sky-500 mt-1 mr-2 shrink-0">
+                                            <div class="flex flex-wrap items-center gap-2 flex-1">
+                                                <span class="sub-checklist-item-text">f) Ato formal de aceitação do órgão ou entidade gerenciadora, com expressa declaração de que a adesão pretendida está dentro dos limites legais (art. 86, §§ 4º e 5º);</span>
+                                                <span class="bg-blue-100 text-blue-700 text-xs font-medium px-2 py-1 rounded-full border border-blue-200 whitespace-nowrap">Administração</span>
+                                                <button type="button" class="explanatory-note-btn bg-slate-600 hover:bg-slate-700 text-white text-xs font-medium px-2 py-1 rounded-md transition-colors duration-200 ml-2" data-target="nota-explicativa-3f">
+                                                    Nota Explicativa
+                                                </button>
+                                            </div>
+                                        </label>
+                                        <div id="nota-explicativa-3f" class="explanatory-note ml-6 mt-4   bg-blue-50 border-l-4 border-blue-300 rounded-md">
+                                            <h4 class="font-semibold text-blue-800 mb-3">Ato Formal de Aceitação do Órgão Gerenciador</h4>
+                                            <p class="text-slate-700 mb-3 leading-relaxed text-justify">Após a consulta prévia, é necessário que o órgão ou entidade gerenciadora da Ata de Registro de Preços emita um ato formal de aceitação da adesão. Este ato não é uma mera formalidade; ele deve conter uma declaração expressa de que a adesão pretendida pelo órgão "carona" está em conformidade com os limites legais estabelecidos.</p>
+                                            
+                                            <div class="bg-slate-100 p-3 rounded-md mb-3">
+                                                <h5 class="font-semibold text-blue-800 mb-2">Transcrevendo o dispositivo legal (Art. 86, §§ 4º e 5º da Lei nº 14.133/2021):</h5>
+                                                <p class="text-slate-700 text-sm italic leading-relaxed mb-2">Art. 86. A ata de registro de preços poderá ser utilizada por qualquer órgão ou entidade da Administração Pública que não tenha participado do certame licitatório, mediante anuência do órgão gerenciador e do fornecedor.</p>
+                                                <p class="text-slate-700 text-sm italic leading-relaxed mb-2">(...)</p>
+                                                <p class="text-slate-700 text-sm italic leading-relaxed mb-2">§ 4º As aquisições ou contratações adicionais a que se refere este artigo não poderão exceder, por órgão ou entidade, a 50% (cinquenta por cento) dos quantitativos dos itens do instrumento convocatório e registrados na ata de registro de preços para o órgão gerenciador e para os órgãos participantes.</p>
+                                                <p class="text-slate-700 text-sm italic leading-relaxed">§ 5º O quantitativo decorrente das adesões à ata de registro de preços não poderá exceder ao dobro do quantitativo de cada item ou do total registrado para o órgão gerenciador e para os órgãos participantes, independentemente do número de órgãos não participantes.</p>
+                                            </div>
+                                            
+                                            <h5 class="font-semibold text-blue-800 mb-2">Explicação dos Limites:</h5>
+                                            <div class="space-y-3 mb-4">
+                                                <div>
+                                                    <h6 class="font-medium text-slate-800 mb-1">§ 4º (Limite por Órgão Aderente):</h6>
+                                                    <p class="text-slate-600 text-sm leading-relaxed text-justify">Cada órgão ou entidade "carona" (não participante) pode aderir a uma Ata de Registro de Preços em um limite de até 50% dos quantitativos registrados para o órgão gerenciador e os órgãos participantes.</p>
+                                                </div>
+                                                
+                                                <div>
+                                                    <h6 class="font-medium text-slate-800 mb-1">§ 5º (Limite Total da Ata):</h6>
+                                                    <p class="text-slate-600 text-sm leading-relaxed text-justify">O somatório de todas as adesões (de todos os órgãos não participantes) a uma Ata de Registro de Preços não pode exceder o dobro do quantitativo total registrado para o órgão gerenciador e os órgãos participantes.</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="bg-yellow-50 p-3 rounded-md border-l-4 border-yellow-300">
+                                                <h6 class="font-medium text-yellow-800 mb-1">Exemplo:</h6>
+                                                <p class="text-yellow-700 text-sm leading-relaxed">Se o Ministério da Fazenda (órgão gerenciador) registrou 1.000 unidades de um determinado software para si e seus participantes, uma Prefeitura (órgão não participante) poderá aderir a essa Ata para adquirir no máximo 500 unidades (50% de 1.000). Além disso, a soma de todas as adesões de outras prefeituras, estados, etc., não poderá ultrapassar 2.000 unidades (o dobro de 1.000). O Ministério da Fazenda, ao aceitar uma adesão, deve verificar se esses limites não serão ultrapassados.</p>
+                                            </div>
+                                        </div>
+                                    </li>                                    <li class="sub-checklist-item">
+                                        <label class="flex items-start cursor-pointer flex-wrap">
+                                            <input type="checkbox" class="sub-checklist-checkbox h-4 w-4 text-sky-600 border-slate-300 rounded focus:ring-sky-500 mt-1 mr-2 shrink-0">
+                                            <div class="flex flex-wrap items-center gap-2 flex-1">
+                                                <span class="sub-checklist-item-text">g) Ato formal de aceitação do fornecedor, com expressa declaração de que possui condições para atender à pretendida contratação decorrente da adesão sem prejuízo dos compromissos já assumidos;</span>
+                                                <span class="bg-blue-100 text-blue-700 text-xs font-medium px-2 py-1 rounded-full border border-blue-200 whitespace-nowrap">Administração</span>
+                                                <button type="button" class="explanatory-note-btn bg-slate-600 hover:bg-slate-700 text-white text-xs font-medium px-2 py-1 rounded-md transition-colors duration-200 ml-2" data-target="nota-explicativa-3g">
+                                                    Nota Explicativa
+                                                </button>
+                                            </div>
+                                        </label>
+                                        <div id="nota-explicativa-3g" class="explanatory-note ml-6 mt-4   bg-blue-50 border-l-4 border-blue-300 rounded-md">
+                                            <h4 class="font-semibold text-blue-800 mb-3">Ato Formal de Aceitação do Fornecedor</h4>
+                                            <p class="text-slate-700 mb-3 leading-relaxed text-justify">Assim como o órgão gerenciador, o fornecedor detentor da Ata de Registro de Preços também deve emitir um ato formal de aceitação da adesão. Neste documento, o fornecedor deve declarar expressamente que possui a capacidade operacional, logística e financeira para atender à nova demanda decorrente da adesão, sem que isso prejudique ou comprometa os compromissos já assumidos com o órgão gerenciador e com outros órgãos que já tenham aderido ou que sejam participantes da Ata.</p>
+                                            
+                                            <h5 class="font-semibold text-blue-800 mb-2">Aspectos que devem ser avaliados pelo fornecedor:</h5>
+                                            <div class="space-y-2 mb-4">
+                                                <p class="text-slate-600 text-sm leading-relaxed text-justify">• <strong>Capacidade Operacional:</strong> Verificar se possui estrutura para produzir ou fornecer a quantidade adicional solicitada.</p>
+                                                <p class="text-slate-600 text-sm leading-relaxed text-justify">• <strong>Capacidade Logística:</strong> Avaliar se consegue entregar os produtos/serviços nos locais e prazos estabelecidos.</p>
+                                                <p class="text-slate-600 text-sm leading-relaxed text-justify">• <strong>Capacidade Financeira:</strong> Analisar se tem recursos para cumprir com as obrigações sem comprometer outros contratos.</p>
+                                                <p class="text-slate-600 text-sm leading-relaxed text-justify">• <strong>Compromissos Já Assumidos:</strong> Garantir que a nova demanda não afetará negativamente as entregas já programadas.</p>
+                                            </div>
+                                            
+                                            <div class="mt-4 pt-3 border-t border-blue-200">
+                                                <p class="text-slate-700 text-sm leading-relaxed font-medium">Essa exigência visa proteger a Administração Pública de possíveis atrasos, falhas na entrega ou na prestação de serviços devido à sobrecarga do fornecedor, garantindo a efetividade da contratação.</p>
+                                            </div>
+                                        </div>
+                                    </li>                                    <li class="sub-checklist-item">
+                                        <label class="flex items-start cursor-pointer flex-wrap">
+                                            <input type="checkbox" class="sub-checklist-checkbox h-4 w-4 text-sky-600 border-slate-300 rounded focus:ring-sky-500 mt-1 mr-2 shrink-0">
+                                            <div class="flex flex-wrap items-center gap-2 flex-1">
+                                                <span class="sub-checklist-item-text">h) Comprovação da realização de pesquisa de atas de registro de preços vigentes para o objeto no Portal Nacional de Contratações Públicas (PNCP) e justificativa da escolha, na eventual existência de alternativas.</span>
+                                                <span class="bg-orange-100 text-orange-700 text-xs font-medium px-2 py-1 rounded-full border border-orange-200 whitespace-nowrap">Área Demandante</span>
+                                                <button type="button" class="explanatory-note-btn bg-slate-600 hover:bg-slate-700 text-white text-xs font-medium px-2 py-1 rounded-md transition-colors duration-200 ml-2" data-target="nota-explicativa-3h">
+                                                    Nota Explicativa
+                                                </button>
+                                            </div>
+                                        </label>
+                                        <div id="nota-explicativa-3h" class="explanatory-note ml-6 mt-4   bg-blue-50 border-l-4 border-blue-300 rounded-md">
+                                            <h4 class="font-semibold text-blue-800 mb-3">Pesquisa no PNCP e Justificativa da Escolha</h4>
+                                            <p class="text-slate-700 mb-3 leading-relaxed text-justify">Antes de decidir por uma adesão, o órgão ou entidade interessada tem o dever de realizar uma pesquisa abrangente no Portal Nacional de Contratações Públicas (PNCP) para identificar todas as Atas de Registro de Preços vigentes para o objeto que se pretende adquirir.</p>
+                                            
+                                            <div class="space-y-4">
+                                                <div>
+                                                    <h5 class="font-semibold text-blue-800 mb-2">Pesquisa no PNCP:</h5>
+                                                    <p class="text-slate-700 text-sm leading-relaxed">O PNCP é a plataforma oficial onde são publicadas as informações relativas às contratações públicas, incluindo as Atas de Registro de Preços. A pesquisa deve ser documentada, demonstrando o esforço em buscar a melhor opção disponível.</p>
+                                                </div>
+                                                
+                                                <div>
+                                                    <h5 class="font-semibold text-blue-800 mb-2">Justificativa da Escolha:</h5>
+                                                    <p class="text-slate-700 text-sm leading-relaxed mb-2">Caso existam múltiplas Atas de Registro de Preços para o mesmo objeto, o órgão aderente deve justificar a escolha da Ata específica. Essa justificativa deve ser baseada em critérios objetivos, como:</p>
+                                                    
+                                                    <div class="ml-4 space-y-1">
+                                                        <p class="text-slate-600 text-sm leading-relaxed text-justify">• Preço mais vantajoso (considerando a compatibilidade de mercado, conforme item 'd').</p>
+                                                        <p class="text-slate-600 text-sm leading-relaxed text-justify">• Melhores condições de entrega, garantia ou execução.</p>
+                                                        <p class="text-slate-600 text-sm leading-relaxed text-justify">• Proximidade do fornecedor ou do ponto de entrega.</p>
+                                                        <p class="text-slate-600 text-sm leading-relaxed text-justify">• Melhor adequação das especificações do objeto às necessidades.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="mt-4 pt-3 border-t border-blue-200">
+                                                <p class="text-slate-700 text-sm leading-relaxed font-medium">A pesquisa documentada e a justificativa objetiva demonstram que a Administração buscou a melhor opção disponível, atendendo aos princípios da economicidade e eficiência.</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>                        <div class="checklist-item bg-slate-50 rounded-md shadow-sm  ">
+                            <label class="flex items-start cursor-pointer mb-1">
+                                <input type="checkbox" class="checklist-checkbox h-5 w-5 text-blue-600 border-slate-300 rounded focus:ring-blue-500 mt-0.5 mr-3 shrink-0">
+                                <span class="font-semibold text-slate-700 checklist-item-title">4. Pesquisa de Atas no PNCP pelo Aderente</span>
+                                <span class="ml-2.5 bg-orange-100 text-orange-700 text-xs font-medium px-2 py-1 rounded-full border border-orange-200">Área Demandante</span>
+                            </label>
+                            <div class="checklist-item-content pl-8 text-slate-600 leading-relaxed">
+                                A pesquisa de atas no PNCP deve ser feita pelo próprio órgão ou entidade aderente, sem a participação de particulares.
+                                <div class="mt-3">
+                                    <button type="button" class="explanatory-note-btn bg-slate-600 hover:bg-slate-700 text-white text-sm font-medium px-3 py-1 rounded-md transition-colors duration-200" data-target="nota-explicativa-4">
+                                        Nota Explicativa
+                                    </button>
+                                </div>
+                                <div id="nota-explicativa-4" class="explanatory-note mt-4   bg-blue-50 border-l-4 border-blue-300 rounded-md">
+                                    <h4 class="font-semibold text-blue-800 mb-3">Pesquisa de Atas no PNCP pelo Aderente</h4>
+                                    <p class="text-slate-700 mb-3 leading-relaxed text-justify">A responsabilidade pela pesquisa e identificação de Atas de Registro de Preços vigentes no Portal Nacional de Contratações Públicas (PNCP) recai exclusivamente sobre o próprio órgão ou entidade aderente. Isso significa que a busca por uma Ata para adesão deve ser conduzida por agentes públicos, sem a participação ou intermediação de particulares.</p>
+                                    
+                                    <h5 class="font-semibold text-blue-800 mb-2">Justificativas para essa Exigência:</h5>
+                                    <div class="space-y-4">
+                                        <div>
+                                            <h6 class="font-medium text-slate-800 mb-1">Princípio da Impessoalidade e Moralidade:</h6>
+                                            <p class="text-slate-600 text-sm leading-relaxed text-justify">A pesquisa realizada por agentes públicos garante que a identificação da Ata seja pautada no interesse público e nas necessidades da administração, sem a influência de interesses privados que poderiam direcionar a escolha para uma Ata específica em detrimento de outras mais vantajosas.</p>
+                                        </div>
+                                        
+                                        <div>
+                                            <h6 class="font-medium text-slate-800 mb-1">Responsabilidade Legal:</h6>
+                                            <p class="text-slate-600 text-sm leading-relaxed text-justify">A decisão de aderir a uma Ata é um ato administrativo que gera responsabilidades para o gestor público. A pesquisa conduzida internamente assegura que o órgão tenha pleno conhecimento das opções disponíveis e possa justificar sua escolha com base em critérios objetivos e legais.</p>
+                                        </div>
+                                        
+                                        <div>
+                                            <h6 class="font-medium text-slate-800 mb-1">Evitar Conflitos de Interesse:</h6>
+                                            <p class="text-slate-600 text-sm leading-relaxed text-justify">A vedação da participação de particulares na pesquisa visa prevenir situações de conflito de interesse, onde uma empresa poderia "sugerir" uma Ata em que ela própria seja a fornecedora, sem que o órgão tenha realizado uma análise imparcial das alternativas.</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-4 pt-3 border-t border-blue-200">
+                                        <p class="text-slate-700 text-sm leading-relaxed font-medium">Portanto, a pesquisa no PNCP é uma atribuição indelegável dos servidores do órgão ou entidade que pretende aderir à Ata.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        <div class="checklist-item bg-slate-50 rounded-md shadow-sm  ">
+                            <label class="flex items-start cursor-pointer mb-1">
+                                <input type="checkbox" class="checklist-checkbox h-5 w-5 text-blue-600 border-slate-300 rounded focus:ring-blue-500 mt-0.5 mr-3 shrink-0">
+                                <span class="font-semibold text-slate-700 checklist-item-title">5. Participação de Particulares na Identificação da Ata</span>
+                                <span class="ml-2.5 bg-orange-100 text-orange-700 text-xs font-medium px-2 py-1 rounded-full border border-orange-200">Área Demandante</span>
+                            </label>
+                            <div class="checklist-item-content pl-8 text-slate-600 leading-relaxed">
+                                A eventual participação de particulares na identificação de ata vigente para o objeto deve ser referida no processo de adesão e não afasta o dever do órgão ou entidade aderente de realizar e comprovar a realização de sobredita pesquisa no PNCP e de justificar a escolha, na eventual existência de alternativas.
+                                <div class="mt-3">
+                                    <button type="button" class="explanatory-note-btn bg-slate-600 hover:bg-slate-700 text-white text-sm font-medium px-3 py-1 rounded-md transition-colors duration-200" data-target="nota-explicativa-5">
+                                        Nota Explicativa
+                                    </button>
+                                </div>
+                                <div id="nota-explicativa-5" class="explanatory-note mt-4   bg-blue-50 border-l-4 border-blue-300 rounded-md">
+                                    <h4 class="font-semibold text-blue-800 mb-3">Participação de Particulares na Identificação da Ata</h4>
+                                    <p class="text-slate-700 mb-3 leading-relaxed text-justify">Embora a pesquisa formal de Atas de Registro de Preços no PNCP deva ser realizada pelo próprio órgão ou entidade aderente (conforme item 4), a Lei reconhece que particulares podem, eventualmente, identificar ou sugerir a existência de uma Ata vigente para um determinado objeto.</p>
+                                    
+                                    <div class="bg-yellow-50 p-3 rounded-md border-l-4 border-yellow-300 mb-4">
+                                        <h6 class="font-medium text-yellow-800 mb-1">Importante:</h6>
+                                        <p class="text-yellow-700 text-sm leading-relaxed text-justify">A eventual participação de particulares na identificação de uma Ata <strong>NÃO AFASTA, EM HIPÓTESE ALGUMA</strong>, o dever do órgão ou entidade aderente de realizar suas próprias obrigações legais.</p>
+                                    </div>
+                                    
+                                    <h5 class="font-semibold text-blue-800 mb-2">Obrigações Indelegáveis do Órgão Aderente:</h5>
+                                    <div class="space-y-4">
+                                        <div>
+                                            <h6 class="font-medium text-slate-800 mb-1">Realizar e Comprovar a Pesquisa no PNCP:</h6>
+                                            <p class="text-slate-600 text-sm leading-relaxed text-justify">O órgão deve, por seus próprios meios e servidores, efetuar a pesquisa formal no Portal Nacional de Contratações Públicas e documentar essa pesquisa no processo administrativo de adesão. Isso demonstra que a Administração cumpriu sua obrigação de buscar as melhores opções disponíveis.</p>
+                                        </div>
+                                        
+                                        <div>
+                                            <h6 class="font-medium text-slate-800 mb-1">Justificar a Escolha:</h6>
+                                            <p class="text-slate-600 text-sm leading-relaxed text-justify">Caso a pesquisa revele a existência de outras Atas para o mesmo objeto, o órgão aderente deve justificar, de forma clara e objetiva, a escolha da Ata específica à qual pretende aderir. Essa justificativa deve ser baseada em critérios técnicos, econômicos e de conveniência e oportunidade, sempre visando o interesse público.</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-4 pt-3 border-t border-blue-200">
+                                        <h5 class="font-semibold text-blue-800 mb-2">Exemplo Prático:</h5>
+                                        <p class="text-slate-700 text-sm mb-3 leading-relaxed text-justify">Uma empresa "X" (particular) que fabrica determinado produto pode informar a um órgão público "Y" que existe uma Ata de Registro de Preços válida para aquele produto, gerenciada por outro órgão "Z". O órgão "Y", ao receber essa informação, não pode simplesmente aceitá-la e iniciar o processo de adesão com base na indicação da empresa "X". Ele deve, obrigatoriamente:</p>
+                                        
+                                        <div class="space-y-2 ml-4">
+                                            <p class="text-slate-600 text-sm leading-relaxed text-justify">1. Agradecer a informação.</p>
+                                            <p class="text-slate-600 text-sm leading-relaxed text-justify">2. Acessar o PNCP e realizar sua própria pesquisa para confirmar a existência da Ata e verificar se há outras Atas para o mesmo objeto.</p>
+                                            <p class="text-slate-600 text-sm leading-relaxed text-justify">3. Se a Ata indicada for a mais vantajosa, justificar sua escolha no processo, mencionando que a informação inicial veio de um particular, mas que a decisão foi tomada após a devida diligência interna.</p>
+                                        </div>
+                                        
+                                        <p class="text-slate-700 text-sm mt-3 leading-relaxed font-medium">Essa regra garante a transparência do processo e evita que a Administração seja influenciada por interesses privados, mantendo a autonomia e a responsabilidade do agente público na condução das aquisições.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><div class="checklist-item bg-slate-50 rounded-md shadow-sm  ">
+                            <label class="flex items-start cursor-pointer mb-1">
+                                <input type="checkbox" class="checklist-checkbox h-5 w-5 text-blue-600 border-slate-300 rounded focus:ring-blue-500 mt-0.5 mr-3 shrink-0">
+                                <span class="font-semibold text-slate-700 checklist-item-title">6. Verificação de Limites pelo Órgão Gerenciador</span>
+                                <span class="ml-2.5 bg-green-100 text-green-700 text-xs font-medium px-2 py-1 rounded-full border border-green-200">Externo</span>
+                            </label>
+                            <div class="checklist-item-content pl-8 text-slate-600 leading-relaxed">
+                                Previamente à emissão do ato formal de aceitação, o órgão ou entidade gerenciadora deve verificar o atendimento aos limites quantitativos previstos nos §§ 5º e 6º do art. 86 da Lei nº 14.133/21 e a outros limites eventualmente previstos em normas do respectivo ente federativo.
+                            </div>
+                        </div>
+                          <div class="checklist-item bg-slate-50 rounded-md shadow-sm  ">
+                            <label class="flex items-start cursor-pointer mb-1">
+                                <input type="checkbox" class="checklist-checkbox h-5 w-5 text-blue-600 border-slate-300 rounded focus:ring-blue-500 mt-0.5 mr-3 shrink-0">
+                                <span class="font-semibold text-slate-700 checklist-item-title">7. Controle Prévio de Legalidade</span>
+                                <span class="ml-2.5 bg-purple-100 text-purple-700 text-xs font-medium px-2 py-1 rounded-full border border-purple-200">Jurídico</span>
+                            </label>
+                            <div class="checklist-item-content pl-8 text-slate-600 leading-relaxed">
+                                A adesão a ata deve ser objeto de controle prévio de legalidade por parte da assessoria jurídica do órgão ou entidade (art. 53, § 4º da Lei nº 14.133/21).
+                            </div>
+                        </div>                        <div class="checklist-item bg-slate-50 rounded-md shadow-sm  ">
+                           <label class="flex items-start cursor-pointer mb-1">
+                                <input type="checkbox" class="checklist-checkbox h-5 w-5 text-blue-600 border-slate-300 rounded focus:ring-blue-500 mt-0.5 mr-3 shrink-0">
+                                <span class="font-semibold text-slate-700 checklist-item-title">8. Transparência pelo Órgão Gerenciador</span>
+                                <span class="ml-2.5 bg-green-100 text-green-700 text-xs font-medium px-2 py-1 rounded-full border border-green-200">Externo</span>
+                            </label>
+                            <div class="checklist-item-content pl-8 text-slate-600 leading-relaxed">
+                                <p class="mb-2">Os órgãos e entidades gerenciadoras devem realizar o controle e o gerenciamento das atas, disponibilizando, no mínimo, as seguintes informações nos respectivos portais de transparência:</p>
+                                <ul class="space-y-2">
+                                    <li class="sub-checklist-item">
+                                        <label class="flex items-start cursor-pointer">
+                                            <input type="checkbox" class="sub-checklist-checkbox h-4 w-4 text-sky-600 border-slate-300 rounded focus:ring-sky-500 mt-1 mr-2 shrink-0">
+                                            <span class="sub-checklist-item-text">1- Os quantitativos registrados, as contratações efetivadas e os saldos, por itens;</span>
+                                        </label>
+                                    </li>
+                                    <li class="sub-checklist-item">
+                                        <label class="flex items-start cursor-pointer">
+                                            <input type="checkbox" class="sub-checklist-checkbox h-4 w-4 text-sky-600 border-slate-300 rounded focus:ring-sky-500 mt-1 mr-2 shrink-0">
+                                            <span class="sub-checklist-item-text">2- As solicitações de adesão aceitas e realizadas, com identificação do órgão ou entidade aderente, do objeto e de seu quantitativo.</span>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>                        <div class="checklist-item bg-slate-50 rounded-md shadow-sm  ">
+                            <label class="flex items-start cursor-pointer mb-1">
+                                <input type="checkbox" class="checklist-checkbox h-5 w-5 text-blue-600 border-slate-300 rounded focus:ring-blue-500 mt-0.5 mr-3 shrink-0">
+                                <span class="font-semibold text-slate-700 checklist-item-title">9. Regulamentação Administrativa</span>
+                                <span class="ml-2.5 bg-purple-100 text-purple-700 text-xs font-medium px-2 py-1 rounded-full border border-purple-200">Jurídico</span>
+                                <span class="ml-2.5 bg-blue-100 text-blue-700 text-xs font-medium px-2 py-1 rounded-full border border-blue-200">Administração</span>
+                            </label>
+                            <div class="checklist-item-content pl-8 text-slate-600 leading-relaxed">
+                                As atividades e os procedimentos relacionados à adesão e ao gerenciamento das atas vigentes devem ser objeto de regulamentação administrativa dos órgãos e entidades da Federação.
+                            </div>
+                        </div>                        <div class="checklist-item bg-slate-50 rounded-md shadow-sm  ">
+                            <label class="flex items-start cursor-pointer mb-1">
+                                <input type="checkbox" class="checklist-checkbox h-5 w-5 text-blue-600 border-slate-300 rounded focus:ring-blue-500 mt-0.5 mr-3 shrink-0">
+                                <span class="font-semibold text-slate-700 checklist-item-title">10. Adesão entre Consórcios Públicos</span>
+                                <span class="ml-2.5 bg-orange-100 text-orange-700 text-xs font-medium px-2 py-1 rounded-full border border-orange-200">Área Demandante</span>
+                            </label>
+                            <div class="checklist-item-content pl-8 text-slate-600 leading-relaxed">
+                                A adesão a ata de um consórcio público por outro consórcio público é permitida exclusivamente para consumo próprio, não sendo aplicável a extensão da adesão aos órgãos e entidades consorciadas.
+                                <div class="mt-3">
+                                    <button type="button" class="explanatory-note-btn bg-slate-600 hover:bg-slate-700 text-white text-sm font-medium px-3 py-1 rounded-md transition-colors duration-200" data-target="nota-explicativa-10">
+                                        Nota Explicativa
+                                    </button>
+                                </div>
+                                <div id="nota-explicativa-10" class="explanatory-note mt-4   bg-blue-50 border-l-4 border-blue-300 rounded-md">
+                                    <h4 class="font-semibold text-blue-800 mb-3">Adesão entre Consórcios Públicos</h4>
+                                    <p class="text-slate-700 mb-3 leading-relaxed text-justify">A Lei nº 14.133/2021, em seu Art. 86, § 7º, permite a adesão a Atas de Registro de Preços entre consórcios públicos, mas com uma restrição fundamental: essa adesão é permitida exclusivamente para consumo próprio do consórcio aderente, não sendo aplicável a extensão da adesão aos órgãos e entidades que o compõem.</p>
+                                    
+                                    <h5 class="font-semibold text-blue-800 mb-2">O que são Consórcios Públicos?</h5>
+                                    <p class="text-slate-700 mb-4 leading-relaxed text-justify">Consórcios públicos são associações entre entes federativos (municípios, estados, Distrito Federal) para a gestão compartilhada de serviços públicos ou a realização de objetivos de interesse comum. Eles possuem personalidade jurídica própria e capacidade de contratar.</p>
+                                    
+                                    <h5 class="font-semibold text-blue-800 mb-2">Explicação da Restrição:</h5>
+                                    <p class="text-slate-700 mb-3 leading-relaxed text-justify">Quando um consórcio público adere a uma Ata de Registro de Preços de outro consórcio público, os bens ou serviços adquiridos por essa adesão devem ser destinados diretamente às atividades e necessidades do próprio consórcio aderente.</p>
+                                    
+                                    <div class="space-y-4">
+                                        <div>
+                                            <h6 class="font-medium text-slate-800 mb-1">Consumo Próprio:</h6>
+                                            <p class="text-slate-600 text-sm leading-relaxed text-justify">Significa que o objeto da adesão será utilizado para o funcionamento, manutenção ou para a execução de projetos e serviços que são de responsabilidade direta do consórcio, como, por exemplo, a compra de material de escritório para sua sede, equipamentos para uma central de serviços compartilhada pelo consórcio, ou a contratação de um serviço que beneficie o consórcio em sua estrutura administrativa.</p>
+                                        </div>
+                                        
+                                        <div>
+                                            <h6 class="font-medium text-slate-800 mb-1">Não Extensível aos Consorciados:</h6>
+                                            <p class="text-slate-600 text-sm leading-relaxed text-justify">A restrição impede que o consórcio aderente utilize essa "carona" para adquirir bens ou serviços que seriam, na verdade, destinados aos seus entes consorciados individualmente. Ou seja, um município membro de um consórcio não pode se beneficiar da adesão feita pelo seu consórcio a uma Ata de outro consórcio para suprir suas próprias demandas.</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-4 pt-3 border-t border-blue-200">
+                                        <h5 class="font-semibold text-blue-800 mb-2">Justificativa para a Restrição:</h5>
+                                        <p class="text-slate-700 text-sm leading-relaxed text-justify">Essa limitação visa controlar os limites de adesão (conforme Art. 86, §§ 4º e 5º da Lei nº 14.133/2021) e evitar uma "cadeia" ilimitada de caronas que desvirtuaria o propósito original da licitação e da Ata de Registro de Preços. A adesão é uma exceção e deve ser rigorosamente controlada para não se tornar a regra, comprometendo os princípios da competitividade e da economicidade.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><div class="checklist-item bg-slate-50 rounded-md shadow-sm  ">
+                            <label class="flex items-start cursor-pointer mb-1">
+                                <input type="checkbox" class="checklist-checkbox h-5 w-5 text-blue-600 border-slate-300 rounded focus:ring-blue-500 mt-0.5 mr-3 shrink-0">
+                                <span class="font-semibold text-slate-700 checklist-item-title">11. Publicidade das Adesões</span>
+                                <span class="ml-2.5 bg-blue-100 text-blue-700 text-xs font-medium px-2 py-1 rounded-full border border-blue-200">Administração</span>
+                            </label>
+                            <div class="checklist-item-content pl-8 text-slate-600 leading-relaxed">
+                                Em respeito aos princípios da publicidade, da transparência e do acesso à informação, os resumos das adesões devem ser disponibilizados em sítio eletrônico dos órgãos ou entidades relacionados, independentemente do número de habitantes do ente federativo.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="recomendacaoComite" class="tab-content-item hidden">
+                    <h2 class="text-xl font-semibold text-blue-600 mb-3">Recomendação ao Comitê da Rede Nacional de Contratações Públicas (RNCP)</h2>
+                    <p class="text-slate-700 leading-relaxed">Recomenda-se ao Comitê da Rede Nacional de Contratações Públicas que avalie a possibilidade de desenvolver ou adaptar mecanismo de divulgação de contratos (ou instrumentos similares) decorrentes de adesões a atas de registro de preços por parte de órgão ou entidade da administração pública estadual, distrital ou municipal (e, também para os "Órgãos Não-SISG", no âmbito federal), de modo a assegurar a rastreabilidade do processo originário da compra e a sua categorização como "adesão a ARP" ou expressão similar.</p>
+                </section>
+
+                <section id="expediente" class="tab-content-item hidden">
+                    <h2 class="text-xl font-semibold text-blue-600 mb-3">Expediente</h2>
+                    <p class="text-slate-700 mb-2">Brasília, 02 de abril de 2025.</p>
+                    <ul class="list-none space-y-1 text-slate-700">
+                        <li><strong>Conselheiro EDILSON SILVA</strong> - Presidente da Atricon</li>
+                        <li><strong>Conselheiro EDILBERTO CARLOS PONTES LIMA</strong> - Presidente do IRB</li>
+                        <li><strong>Conselheiro LUIZ ANTONIO GUARANÁ</strong> - Presidente do CNPTC</li>
+                        <li><strong>Conselheiro THIERS VIANNA MONTEBELLO</strong> - Presidente da Abracom</li>
+                        <li><strong>Conselheira-Substituta MILENE DIAS DA CUNHA</strong> - Presidente da Audicon</li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+
+        <footer class="mt-12 text-center text-sm text-slate-500">
+            <p>&copy; <span id="currentYear"></span> Guia Interativo da Nota Recomendatória Conjunta Nº 01/2025. Conteúdo adaptado para fins informativos.</p>
+        </footer>
+    </div>
+
+    <script>        document.addEventListener('DOMContentLoaded', function () {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content-item');
+            const mainChecklistCheckboxes = document.querySelectorAll('.checklist-checkbox');
+            const subChecklistCheckboxes = document.querySelectorAll('.sub-checklist-checkbox');
+
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+            // Inicializar a aba ativa corretamente
+            function initActiveTab() {
+                const activeButton = document.querySelector('.tab-button.active');
+                if (activeButton) {
+                    const targetTab = activeButton.dataset.tab;
+                    
+                    // Configurar botões
+                    tabButtons.forEach(btn => {
+                        if (btn === activeButton) {
+                            btn.classList.add('active', 'text-blue-800', 'font-semibold');
+                            btn.classList.remove('text-slate-500');
+                        } else {
+                            btn.classList.remove('active', 'text-blue-800', 'font-semibold');
+                            btn.classList.add('text-slate-500');
+                        }
+                    });
+                    
+                    // Configurar conteúdo das abas
+                    tabContents.forEach(content => {
+                        content.classList.toggle('hidden', content.id !== targetTab);
+                    });
+                }
+            }
+            
+            // Inicializar na carga da página
+            initActiveTab();
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetTab = button.dataset.tab;
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('active', 'text-blue-800', 'font-semibold');
+                        btn.classList.add('text-slate-500');
+                    });
+                    button.classList.add('active', 'text-blue-800', 'font-semibold');
+                    button.classList.remove('text-slate-500');
+                    
+                    tabContents.forEach(content => {
+                        content.classList.toggle('hidden', content.id !== targetTab);
+                    });
+                });
+            });
+
+            mainChecklistCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const parentItem = this.closest('.checklist-item');
+                    const contentToStyle = parentItem.querySelector('.checklist-item-content');
+                    const titleToStrike = parentItem.querySelector('.checklist-item-title');
+                    const subItems = parentItem.querySelectorAll('.sub-checklist-item');
+
+                    if (contentToStyle) {
+                        contentToStyle.classList.toggle('strikethrough-parent', this.checked);
+                    }
+                    if (titleToStrike) {
+                        titleToStrike.classList.toggle('strikethrough-text', this.checked);
+                    }
+
+                    subItems.forEach(subItem => {
+                        const subCheckbox = subItem.querySelector('.sub-checklist-checkbox');
+                        const subTextElement = subItem.querySelector('.sub-checklist-item-text');
+                        if (subCheckbox) {
+                            subCheckbox.checked = this.checked;
+                        }
+                        if (subTextElement) {
+                            subTextElement.classList.toggle('strikethrough-text', this.checked);
+                        }
+                    });
+                });
+            });            subChecklistCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const textElement = this.parentElement.querySelector('.sub-checklist-item-text');
+                    if (textElement) {
+                        textElement.classList.toggle('strikethrough-text', this.checked);
+                    }
+                    // Opcional: lógica para desmarcar o checkbox pai se algum subitem for desmarcado
+                    // const mainChecklistItem = this.closest('.checklist-item');
+                    // const mainCheckbox = mainChecklistItem.querySelector('.checklist-checkbox');
+                    // if (!this.checked && mainCheckbox.checked) {
+                    //    // Se um subitem é desmarcado e o pai está marcado, você pode querer desmarcar o pai
+                    //    // ou deixar como está, dependendo da lógica desejada.
+                    //    // mainCheckbox.checked = false;
+                    //    // mainCheckbox.dispatchEvent(new Event('change')); // Para acionar a lógica do pai
+                    // }
+                });
+            });            // Funcionalidade para os botões de nota explicativa com animação
+            const explanatoryNoteBtns = document.querySelectorAll('.explanatory-note-btn');
+            explanatoryNoteBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const targetId = this.dataset.target;
+                    const targetDiv = document.getElementById(targetId);
+                    
+                    if (targetDiv) {
+                        const isExpanded = targetDiv.classList.contains('expanded');
+                        
+                        if (isExpanded) {
+                            // Recolher
+                            targetDiv.classList.remove('expanded');
+                            this.textContent = 'Nota Explicativa';
+                            this.classList.remove('active');
+                        } else {
+                            // Expandir
+                            targetDiv.classList.add('expanded');
+                            this.textContent = 'Ocultar Nota Explicativa';
+                            this.classList.add('active');
+                        }
+                    }
+                });
+            });
+
+            // Funcionalidade do visualizador de PDF
+            const pdfViewerBtn = document.getElementById('pdf-viewer-btn');
+            const pdfModal = document.getElementById('pdf-modal');
+            const pdfOverlay = document.getElementById('pdf-overlay');
+            const pdfCloseBtn = document.getElementById('pdf-close-btn');
+            const pdfIframe = document.getElementById('pdf-iframe');            // Função para abrir o modal do PDF
+            function openPdfModal() {
+                // Define o caminho do PDF
+                pdfIframe.src = 'NotaRec.Atricon.pdf';
+                
+                // Mostra o modal
+                pdfModal.classList.remove('hidden');
+                
+                // Previne o scroll do body
+                document.body.style.overflow = 'hidden';
+            }
+
+            // Função para fechar o modal do PDF
+            function closePdfModal() {
+                // Esconde o modal
+                pdfModal.classList.add('hidden');
+                
+                // Limpa o iframe para parar o carregamento
+                pdfIframe.src = '';
+                
+                // Restaura o scroll do body
+                document.body.style.overflow = 'auto';
+            }
+
+            // Event listeners
+            pdfViewerBtn.addEventListener('click', openPdfModal);
+            pdfCloseBtn.addEventListener('click', closePdfModal);
+            
+            // Fechar ao clicar no overlay (fora do PDF)
+            pdfOverlay.addEventListener('click', closePdfModal);
+            
+            // Fechar com a tecla ESC
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape' && !pdfModal.classList.contains('hidden')) {
+                    closePdfModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
